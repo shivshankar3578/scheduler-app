@@ -1,0 +1,8 @@
+{
+  "schema": "./src/models/index.ts",
+  "out": "./migrations",
+  "dialect": "sqlite",
+  "dbCredentials": {
+    "url": "./db.sqlite"
+  }
+}

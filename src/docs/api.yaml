@@ -1,0 +1,578 @@
+openapi: 3.1.0
+info:
+  title: scheduler-app
+  version: 0.0.1
+paths:
+  /api/login:
+    post:
+      operationId: PostApiLogin
+      requestBody:
+        description: POST /api/login Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+        required: true
+      responses:
+        "200":
+          description: POST /api/login Positive response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: success
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      token:
+                        type: string
+                    required:
+                      - message
+                      - token
+                    additionalProperties: false
+                required:
+                  - status
+                  - data
+                additionalProperties: false
+        "400":
+          description: POST /api/login Negative response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: error
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    additionalProperties: false
+                required:
+                  - status
+                  - error
+                additionalProperties: false
+              examples:
+                example1:
+                  value:
+                    status: error
+                    error:
+                      message: Sample error message
+  /api/signup:
+    post:
+      operationId: PostApiSignup
+      requestBody:
+        description: POST /api/signup Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  minLength: 3
+                password:
+                  type: string
+                  minLength: 6
+              required:
+                - email
+                - password
+        required: true
+      responses:
+        "200":
+          description: POST /api/signup Positive response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: success
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      token:
+                        type: string
+                    required:
+                      - message
+                      - token
+                    additionalProperties: false
+                required:
+                  - status
+                  - data
+                additionalProperties: false
+        "400":
+          description: POST /api/signup Negative response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: error
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    additionalProperties: false
+                required:
+                  - status
+                  - error
+                additionalProperties: false
+              examples:
+                example1:
+                  value:
+                    status: error
+                    error:
+                      message: Sample error message
+  /api/events:
+    get:
+      operationId: GetApiEvents
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          description: GET /api/events Parameter
+          schema:
+            type: string
+        - name: endDate
+          in: query
+          required: true
+          description: GET /api/events Parameter
+          schema:
+            type: string
+      responses:
+        "200":
+          description: GET /api/events Positive response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: success
+                  data:
+                    type: object
+                    properties:
+                      events:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            title:
+                              type: string
+                            description:
+                              type:
+                                - string
+                                - "null"
+                            startTime:
+                              type: string
+                            endTime:
+                              type: string
+                            timezone:
+                              type: string
+                            allDay:
+                              type:
+                                - boolean
+                                - "null"
+                            createdBy:
+                              type: string
+                          required:
+                            - id
+                            - title
+                            - description
+                            - startTime
+                            - endTime
+                            - timezone
+                            - allDay
+                            - createdBy
+                          additionalProperties: false
+                    required:
+                      - events
+                    additionalProperties: false
+                required:
+                  - status
+                  - data
+                additionalProperties: false
+        "400":
+          description: GET /api/events Negative response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: error
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    additionalProperties: false
+                required:
+                  - status
+                  - error
+                additionalProperties: false
+              examples:
+                example1:
+                  value:
+                    status: error
+                    error:
+                      message: Sample error message
+    post:
+      operationId: PostApiEvents
+      requestBody:
+        description: POST /api/events Request body
+        content:
+          application/json:
+            schema:
+              allOf:
+                - {}
+                - type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    description:
+                      type:
+                        - string
+                        - "null"
+                    startTime:
+                      type: string
+                    endTime:
+                      type: string
+                    timezone:
+                      type: string
+                    allDay:
+                      type:
+                        - boolean
+                        - "null"
+                    createdBy:
+                      type: string
+                  required:
+                    - id
+                    - title
+                    - startTime
+                    - endTime
+                    - timezone
+                    - createdBy
+        required: true
+      security:
+        - APIKEY_1: []
+      responses:
+        "200":
+          description: POST /api/events Positive response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                    required:
+                      - id
+                    additionalProperties: false
+                required:
+                  - data
+                additionalProperties: false
+        "400":
+          description: POST /api/events Negative response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+                additionalProperties: false
+  /api/events/{id}:
+    get:
+      operationId: GetApiEventsId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: GET /api/events/:id Parameter
+          schema:
+            type: string
+      responses:
+        "200":
+          description: GET /api/events/:id Positive response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      description:
+                        type:
+                          - string
+                          - "null"
+                      startTime:
+                        type: string
+                      endTime:
+                        type: string
+                      timezone:
+                        type: string
+                      allDay:
+                        type:
+                          - boolean
+                          - "null"
+                      createdBy:
+                        type: string
+                    required:
+                      - id
+                      - title
+                      - description
+                      - startTime
+                      - endTime
+                      - timezone
+                      - allDay
+                      - createdBy
+                    additionalProperties: false
+                required:
+                  - status
+                  - data
+                additionalProperties: false
+        "400":
+          description: GET /api/events/:id Negative response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: error
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    additionalProperties: false
+                required:
+                  - status
+                  - error
+                additionalProperties: false
+              examples:
+                example1:
+                  value:
+                    status: error
+                    error:
+                      message: Sample error message
+    patch:
+      operationId: PatchApiEventsId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: PATCH /api/events/:id Parameter
+          schema:
+            type: string
+      requestBody:
+        description: PATCH /api/events/:id Request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type:
+                    - string
+                    - "null"
+                startTime:
+                  type: string
+                endTime:
+                  type: string
+                timezone:
+                  type: string
+                allDay:
+                  type:
+                    - boolean
+                    - "null"
+                createdBy:
+                  type: string
+              required:
+                - title
+                - startTime
+                - endTime
+                - timezone
+                - createdBy
+        required: true
+      responses:
+        "200":
+          description: PATCH /api/events/:id Positive response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: success
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                    required:
+                      - success
+                    additionalProperties: false
+                required:
+                  - status
+                  - data
+                additionalProperties: false
+        "400":
+          description: PATCH /api/events/:id Negative response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: error
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    additionalProperties: false
+                required:
+                  - status
+                  - error
+                additionalProperties: false
+              examples:
+                example1:
+                  value:
+                    status: error
+                    error:
+                      message: Sample error message
+    delete:
+      operationId: DeleteApiEventsId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: DELETE /api/events/:id Parameter
+          schema:
+            type: string
+      responses:
+        "200":
+          description: DELETE /api/events/:id Positive response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: success
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                    required:
+                      - success
+                    additionalProperties: false
+                required:
+                  - status
+                  - data
+                additionalProperties: false
+        "400":
+          description: DELETE /api/events/:id Negative response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: error
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    additionalProperties: false
+                required:
+                  - status
+                  - error
+                additionalProperties: false
+              examples:
+                example1:
+                  value:
+                    status: error
+                    error:
+                      message: Sample error message
+components:
+  schemas: {}
+  responses: {}
+  parameters: {}
+  examples: {}
+  requestBodies: {}
+  headers: {}
+  securitySchemes:
+    APIKEY_1:
+      type: apiKey
+      in: header
+      name: token
+  links: {}
+  callbacks: {}
+tags: []
+servers:
+  - url: localhost
